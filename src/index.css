@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: JetBrainsMonoFont;
+  src: url('./assets/font/JetBrainsMono-VariableFont_wght.ttf') format('truetype');
+  font-display: swap;
+}
+
+@theme inline {
+  --color-1: #b7c9e4;
+  --color-2: #a1b1e0;
+  --color-3: #e5f3ff;
+  --color-4: #f4f8ff;
+  --color-5: #4a6e9d;
+
+  --color-success-main: #16a34a;
+  --color-success-bg: #dffce7;
+
+  --color-process-main: #158ecb;
+  --color-process-bg: #e0f2fe;
+
+  --color-quit-main: #dd2d2d;
+  --color-quit-bg: #fee2e2;
+
+  --color-wait-main: #ca8a04;
+  --color-wait-bg: #fef9c3;
+}
+
+:root {
+  font-family: 'JetBrainsMonoFont', monospace;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: var(--color-1);
+  color: #111827;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-1);
+}
