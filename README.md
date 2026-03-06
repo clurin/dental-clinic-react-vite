@@ -1,4 +1,4 @@
-# Dental Clinic Frontend
+<img width="3076" height="1405" alt="Drawing 2026-03-06 17 56 50 excalidraw" src="https://github.com/user-attachments/assets/7c1eade2-65d7-481d-9f95-97cd16ecb562" /># Dental Clinic Frontend
 
 React + TypeScript + Vite frontend for dental clinic operations: overview, patients, visits, services, payments, and staff management.
 
@@ -81,3 +81,4 @@ Vite manual chunks are configured in `vite.config.ts` for:
 - Backend API must provide routes compatible with constants in `src/app/endpoints.ts`.
 - In production, if `VITE_API_URL` is not `/api`, ensure CORS and deployment routing are configured accordingly.
 
+<img width="3076" height="1405" alt="Drawing 2026-03-06 17 56 50 excalidraw" src="https://github.com/user-attachments/assets/2b70e482-82a0-4b24-ac0b-f996e7155100" />
