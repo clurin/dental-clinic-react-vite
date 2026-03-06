@@ -28,8 +28,7 @@ export const updateUserSchema = z.object({
     last_name: userSchema.shape.last_name,
     email: userSchema.shape.email,
     phone: userSchema.shape.phone,
-    password: z.string().min(6, 'Пароль должен быть не менее 6 символов').optional(),
-
+    password: z.string().optional().refine((val) => !val || val.length >= 6, { message: 'Минимум 6 символов', }),
     role: userSchema.shape.role,
     is_active: userSchema.shape.is_active,
-}).partial();
+})

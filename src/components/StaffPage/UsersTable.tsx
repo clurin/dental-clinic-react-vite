@@ -47,6 +47,7 @@ const UsersTable = () => {
               <th className="px-4 py-3 text-left">Телефон</th>
               <th className="px-4 py-3 text-left">Email</th>
               <th className="px-4 py-3 text-left">Добавлен</th>
+              <th className="px-4 py-3 text-left">Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -58,10 +59,10 @@ const UsersTable = () => {
                 <td className="px-4 py-3">{formatPhone(user.phone)}</td>
                 <td className="px-4 py-3">{user.email}</td>
                 <td className="px-4 py-3">{formatDate(user.created_at, { withTime: false })}</td>
-                <td className="flex flex-row gap-4 mt-1.5">
+                <td className="flex flex-row gap-4 px-4 py-3">
                   <button onClick={() => {
                     setEditingUser(user)
-                    setIsCreateOpen(true)
+                    setIsUpdateOpen(true)
                   }}><EditButton /></button>
                   <DeleteButton />
                 </td>
@@ -85,9 +86,12 @@ const UsersTable = () => {
       />
       <UserUpdateFormModal
         isOpen={isUpdateOpen}
-        onClose=(() => {
-        setIsUpdateOpen(false)
-      }) />
+        user={editingUser}
+        onClose={() => {
+          setIsUpdateOpen(false)
+          setEditingUser(undefined)
+        }}
+      />
     </>
   )
 }

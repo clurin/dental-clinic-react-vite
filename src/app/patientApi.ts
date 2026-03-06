@@ -4,6 +4,7 @@ import type { CreatePatientDto, Patient, UpdatePatientDto } from './models/patie
 
 export const patientApi = api.injectEndpoints({
   endpoints: (build) => ({
+
     getPatients: build.query<Patient[], void>({
       query: () => ENDPOINTS.PATIENTS,
       providesTags: (result) =>
@@ -11,10 +12,12 @@ export const patientApi = api.injectEndpoints({
           ? [...result.map(({ id }) => ({ type: 'Patient' as const, id })), { type: 'Patient' as const, id: 'LIST' }]
           : [{ type: 'Patient' as const, id: 'LIST' }],
     }),
+
     getPatientById: build.query<Patient, string>({
       query: (id) => withId(ENDPOINTS.PATIENTS, id),
       providesTags: (_result, _error, id) => [{ type: 'Patient', id }],
     }),
+
     createPatient: build.mutation<Patient, CreatePatientDto>({
       query: (body) => ({
         url: ENDPOINTS.PATIENTS,
@@ -23,6 +26,7 @@ export const patientApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Patient', id: 'LIST' }],
     }),
+
     updatePatient: build.mutation<Patient, { id: string; data: UpdatePatientDto }>({
       query: ({ id, data }) => ({
         url: withId(ENDPOINTS.PATIENTS, id),
@@ -31,6 +35,7 @@ export const patientApi = api.injectEndpoints({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Patient', id }, { type: 'Patient', id: 'LIST' }],
     }),
+
     deletePatient: build.mutation<{ success: boolean }, string>({
       query: (id) => ({
         url: withId(ENDPOINTS.PATIENTS, id),

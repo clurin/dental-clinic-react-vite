@@ -3,7 +3,11 @@ export type VisitStatus = 'scheduled' | 'in_progress' | 'completed' | 'cancelled
 export interface Visit {
   id: string
   patient_id: string
-  doctor_id: string | null
+  doctor_id: string
+  patient_first_name: string
+  patient_last_name: string
+  doctor_first_name: string
+  doctor_last_name: string
   start_time: string
   end_time: string
   status: VisitStatus
@@ -13,7 +17,7 @@ export interface Visit {
 
 export interface CreateVisitDto {
   patient_id: string
-  doctor_id: string | null
+  doctor_id: string
   start_time: string
   end_time: string
   status: VisitStatus

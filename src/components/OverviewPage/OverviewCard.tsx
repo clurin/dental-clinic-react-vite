@@ -1,7 +1,15 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons'
 import DemoPie from './DemoPie'
+import { useGetPatientsQuery } from '../../app/patientApi'
+import { useGetUsersQuery } from '../../app/userApi'
+import { useGetVisitsQuery } from '../../app/visitApi'
 
 const OverviewCard = () => {
+    const patientsCount = useGetPatientsQuery().data?.length
+    const doctors = useGetUsersQuery().data?.filter(user => user.role === 'doctor')
+    const visitsForDoctor = useGetVisitsQuery().data
+    // ?.filter(visit => doctors?.some(doctor => doctor.id === visit.doctor_id))
+    console.log('visitsForDoctor', visitsForDoctor)
     const data = [
         { name: 'Ахмедов Р', value: 7 },
         { name: 'Магомедов У', value: 4 },
@@ -14,7 +22,7 @@ const OverviewCard = () => {
                 <div className="bg-4 pr-10 rounded-xl border">
                     <p className="pt-6 pl-6 text-2xl">Количество пациентов</p>
                     <div className="pt-10 pl-6">
-                        <p className="text-6xl">1,202</p>
+                        <p className="text-6xl">{patientsCount}</p>
                         <div className="text-success-main flex flex-row gap-2 items-center py-3">
                             <VerticalAlignTopOutlined className="scale-150" />
                             <p className="text-md font-bold ">+12 пациентов в этом месяце</p>

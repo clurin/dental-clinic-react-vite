@@ -1,86 +1,49 @@
 import { z } from 'zod'
-import { createUserSchema, updateUserSchema } from '../../app/schemas/user.schema'
-import { useCreateUserMutation, useUpdateUserMutation } from '../../app/userApi'
+import { createUserSchema } from '../../app/schemas/user.schema'
+import { useCreateUserMutation } from '../../app/userApi'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { User } from '../../app/models/userTypes'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { useEffect } from 'react'
 
 type CreateInput = z.infer<typeof createUserSchema>;
-type UpdateInput = z.infer<typeof updateUserSchema>;
 
 type Props = {
-    isOpen: boolean,
-    onClose: () => void,
+    isOpen: boolean
+    onClose: () => void
 }
 
-const UserCreateFormModal = ({ isOpen, onClose, user }: Props) => {
+const UserCreateFormModal = ({ isOpen, onClose }: Props) => {
     const [createUser, { isLoading }] = useCreateUserMutation()
-    const [updateUser] = useUpdateUserMutation()
 
-    const schema = user ? updateUserSchema : createUserSchema
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
-        reset
-    } = useForm<CreateInput | UpdateInput>({
-        resolver: zodResolver(schema),
-        defaultValues: user
-            ? {
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                phone: user.phone,
-                role: user.role,
-                is_active: user.is_active,
-            }
-            : {
-                first_name: '',
-                last_name: '',
-                email: '',
-                phone: '',
-                role: 'assistant',
-            }
+    } = useForm<CreateInput>({
+        resolver: zodResolver(createUserSchema),
+        defaultValues: {
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone: '',
+            role: createUserSchema.shape.role.options[0],
+            password: '',
+        }
     })
 
     useEffect(() => {
         if (isOpen) {
-            if (user) {
-                reset({
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    email: user.email,
-                    phone: user.phone,
-                    role: user.role,
-                    is_active: user.is_active,
-                    password: ''
-                })
-            } else {
-                reset({
-                    first_name: '',
-                    last_name: '',
-                    email: '',
-                    phone: '',
-                    role: 'assistant',
-                    password: '',
-                    is_active: true,
-                })
-            }
+            reset()
         }
-    }, [isOpen, user, reset])
+    }, [isOpen, reset])
 
     if (!isOpen) return null
 
-    const onSubmit = async (data: CreateInput | UpdateInput) => {
+    const onSubmit = async (data: CreateInput) => {
         try {
-            if (user) {
-                await updateUser({ id: user.id, data: data as z.infer<typeof updateUserSchema> }).unwrap()
-            } else {
-                await createUser(data as z.infer<typeof createUserSchema>).unwrap()
-            }
-
+            await createUser(data).unwrap()
             reset()
             onClose()
         } catch (error) {
@@ -91,36 +54,25 @@ const UserCreateFormModal = ({ isOpen, onClose, user }: Props) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40">
             <div className="w-full max-w-md rounded-xl bg-white p-6">
-                <div className="flex flex-row items-center justify-between">
-                    <h3 className="mb-4 text-lg font-medium">
-                        {user ? "Редактировать сотрудника" : "Добавить сотрудника"}
-                    </h3>
-                    <button
-                        onClick={onClose}
-                        className='scale-150 cursor-pointer'>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-medium">Добавить сотрудника</h3>
+                    <button onClick={onClose} className="scale-150 cursor-pointer">
                         <CloseCircleOutlined />
                     </button>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
                     <input {...register('first_name')} placeholder="Имя" className="border p-2 rounded" />
-                    {errors.first_name && <p className="text-quit-main text-sm">{errors.first_name.message}</p>}
+                    {errors.first_name && <span className="text-red-500 text-sm">{errors.first_name.message}</span>}
 
                     <input {...register('last_name')} placeholder="Фамилия" className="border p-2 rounded" />
-                    {errors.last_name && <p className="text-quit-main text-sm">{errors.last_name.message}</p>}
+                    {errors.last_name && <span className="text-red-500 text-sm">{errors.last_name.message}</span>}
 
                     <input {...register('email')} placeholder="Email" className="border p-2 rounded" />
-                    {errors.email && <p className="text-quit-main text-sm">{errors.email.message}</p>}
+                    {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
 
                     <input {...register('phone')} placeholder="Телефон" className="border p-2 rounded" />
-                    {errors.phone && <p className="text-quit-main text-sm">{errors.phone.message}</p>}
-
-                    <input
-                        type="password"
-                        {...register('password')}
-                        placeholder="Пароль"
-                        className="border p-2 rounded" />
-                    {errors.password && <p className="text-quit-main text-sm">{errors.password.message}</p>}
+                    {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
 
                     <select {...register('role')} className="border p-2 rounded">
                         <option value="admin">Администратор</option>
@@ -128,10 +80,18 @@ const UserCreateFormModal = ({ isOpen, onClose, user }: Props) => {
                         <option value="assistant">Ассистент</option>
                     </select>
 
+                    <input
+                        type="password"
+                        {...register('password')}
+                        placeholder="Новый пароль"
+                        className="border p-2 rounded"
+                    />
+                    {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="bg-blue-600 text-white rounded p-2 mt-2">
+                        className="bg-blue-600 text-white rounded-md p-2 mt-2 cursor-pointer">
                         {isLoading ? 'Сохранение...' : 'Сохранить'}
                     </button>
                 </form>

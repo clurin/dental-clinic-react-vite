@@ -1,7 +1,10 @@
+import PatientsTable from "../components/Patient/PatientsTable"
 
 const PatientsPage = () => {
     return (
-        <div>PatientsPage</div>
+        <div>
+            <PatientsTable />
+        </div>
     )
 }
 
