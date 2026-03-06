@@ -8,7 +8,6 @@ React + TypeScript + Vite frontend for dental clinic operations: overview, patie
 - Vite 7
 - Redux Toolkit + RTK Query
 - React Router 7
-- Ant Design 6
 - Tailwind CSS 4
 
 ## Requirements
@@ -76,9 +75,9 @@ src/
 Vite manual chunks are configured in `vite.config.ts` for:
 - `react`
 - `redux`
-- `antd`
 - `charts`
 
 ## Known Constraints
 - Backend API must provide routes compatible with constants in `src/app/endpoints.ts`.
 - In production, if `VITE_API_URL` is not `/api`, ensure CORS and deployment routing are configured accordingly.
+
