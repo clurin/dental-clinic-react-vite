@@ -1,4 +1,4 @@
-<img width="3076" height="1405" alt="Drawing 2026-03-06 17 56 50 excalidraw" src="https://github.com/user-attachments/assets/7c1eade2-65d7-481d-9f95-97cd16ecb562" /># Dental Clinic Frontend
+# Dental Clinic Frontend
 
 React + TypeScript + Vite frontend for dental clinic operations: overview, patients, visits, services, payments, and staff management.
 
